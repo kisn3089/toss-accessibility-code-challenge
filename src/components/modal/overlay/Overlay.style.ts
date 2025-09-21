@@ -29,3 +29,11 @@ export const OverlayLayout = styled.div`
   z-index: 1000;
   ${fadeInShortEaseout}
 `;
+
+export const ModalFormLayout = styled.main`
+  padding: 28px;
+  display: flex;
+  flex-direction: column;
+  background-color: ${({ theme }) => theme.palette.white};
+  border-radius: 12px;
+`;
