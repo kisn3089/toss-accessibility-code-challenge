@@ -14,7 +14,7 @@ const palette = {
   black: "#000000",
   gray_light: "#E5E2EC",
   gray_deep: "#7F8084",
-  blue: "#4267A1",
+  blue: "#1451F9",
   red: "#CD2640",
 };
 
