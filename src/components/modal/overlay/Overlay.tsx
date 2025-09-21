@@ -1,4 +1,4 @@
-import { OverlayLayout } from "./Overlay.style";
+import { ModalFormLayout, OverlayLayout } from "./Overlay.style";
 import { useModal } from "../provider/ModalProvider";
 
 export const Overlay = () => {
@@ -22,9 +22,11 @@ export const Overlay = () => {
 
   return (
     <OverlayLayout onClick={onOverlayClick} onKeyDown={onKeyDown}>
-      {getModals().map((ModalComponent, index) => (
-        <div key={index}>{ModalComponent}</div>
-      ))}
+      <ModalFormLayout>
+        {getModals().map((ModalComponent, index) => (
+          <div key={index}>{ModalComponent}</div>
+        ))}
+      </ModalFormLayout>
     </OverlayLayout>
   );
 };

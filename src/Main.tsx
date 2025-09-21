@@ -4,7 +4,7 @@ import { createRoot } from "react-dom/client";
 import { ThemeProvider } from "styled-components";
 import { theme } from "./styles/theme";
 import { Overlay } from "./components/modal/overlay/Overlay";
-import { ModalFormPage } from "./components/modalForm/ModalFormPage";
+import { ModalFormPage } from "./pages/ModalFormPage";
 import { ModalProvider } from "./components/modal/provider/ModalProvider";
 
 createRoot(document.getElementById("root")!).render(
