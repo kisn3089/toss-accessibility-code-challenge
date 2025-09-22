@@ -8,6 +8,7 @@ export const FormSection = styled.section`
 export const FormHeader = styled.header``;
 
 export const FormTitle = styled.h1`
+  width: fit-content;
   font-size: 1.5rem;
   margin: 0px;
 `;

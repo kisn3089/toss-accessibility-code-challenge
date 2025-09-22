@@ -14,10 +14,13 @@ const BaseModal = ({ children, title, announce }: BaseModalProps) => {
     <FormSection
       role="dialog"
       aria-modal="true"
-      aria-labelledby="modal-form-title">
+      aria-labelledby="modal-form-title"
+      aria-describedby="modal-form-description">
       <FormHeader>
-        <FormTitle id="modal-form-title">{title}</FormTitle>
-        <FormAnnounce>{announce}</FormAnnounce>
+        <FormTitle id="modal-form-title" tabIndex={1}>
+          {title}
+        </FormTitle>
+        <FormAnnounce id="modal-form-description">{announce}</FormAnnounce>
       </FormHeader>
       {children}
     </FormSection>

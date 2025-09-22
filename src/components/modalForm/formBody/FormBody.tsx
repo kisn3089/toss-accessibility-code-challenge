@@ -3,6 +3,7 @@ import { FormLayout } from "./FormBody.style";
 import { WithLabel } from "../withLabel/WithLabel";
 import { Input, Select } from "../withLabel/WithLabel.style";
 import { validtor } from "../../../utils/validation/validator";
+import { SreenReader } from "../../common/ScreenReader";
 
 type Experience = "junior" | "mid" | "senior" | "";
 interface FormData {
@@ -47,70 +48,108 @@ export const FormBody = ({ children }: FormBodyProps) => {
   };
 
   return (
-    <FormLayout onSubmit={submitForm} noValidate>
+    <FormLayout
+      role="form"
+      aria-label="신청서"
+      onSubmit={submitForm}
+      noValidate>
       <WithLabel label="이름 / 닉네임">
         {(label) => (
-          <Input
-            id={label}
-            type="text"
-            aria-required
-            name="name"
-            value={formData.name}
-            onChange={changeFormData}
-            aria-invalid={validation.name ? "false" : "true"}
-            aria-errormessage="name-error"
-            min={2}
-            maxLength={20}
-          />
+          <>
+            <Input
+              id={label}
+              type="text"
+              name="name"
+              value={formData.name}
+              onChange={changeFormData}
+              min={2}
+              maxLength={20}
+              tabIndex={2}
+              aria-required="true"
+              aria-invalid={validation.name ? "false" : "true"}
+              aria-describedby={validation.name ? undefined : "name-error"}
+            />
+            {!validation.name && (
+              <SreenReader id="name-error" role="alert" aria-live="polite">
+                이름을 입력해주세요
+              </SreenReader>
+            )}
+          </>
         )}
       </WithLabel>
       <WithLabel label="이메일">
         {(label) => (
-          <Input
-            id={label}
-            type="email"
-            aria-required
-            name="email"
-            value={formData.email}
-            onChange={changeFormData}
-            aria-invalid={validation.email ? "false" : "true"}
-            aria-errormessage="email-error"
-            min={5}
-            maxLength={50}
-          />
+          <>
+            <Input
+              id={label}
+              type="email"
+              name="email"
+              value={formData.email}
+              onChange={changeFormData}
+              min={5}
+              maxLength={50}
+              tabIndex={3}
+              aria-required="true"
+              aria-invalid={validation.email ? "false" : "true"}
+              aria-describedby={validation.email ? undefined : "email-error"}
+            />
+            {!validation.email && (
+              <SreenReader id="email-error" role="alert" aria-live="polite">
+                이메일 형식으로 입력해주세요
+              </SreenReader>
+            )}
+          </>
         )}
       </WithLabel>
       <WithLabel label="FE 경력 연차">
         {(label) => (
-          <Select
-            id={label}
-            name="experience"
-            onChange={changeFormData}
-            value={formData.experience}
-            aria-invalid={validation.experience ? "false" : "true"}
-            aria-errormessage="experience-error"
-            aria-label="FE 경력 연차"
-            aria-required>
-            <option value="">선택하세요</option>
-            <option value="junior">{"0-3년차"}</option>
-            <option value="mid">{"4-7년차"}</option>
-            <option value="senior">{"8년차 이상"}</option>
-          </Select>
+          <>
+            <Select
+              id={label}
+              name="experience"
+              onChange={changeFormData}
+              value={formData.experience}
+              tabIndex={4}
+              aria-invalid={validation.experience ? "false" : "true"}
+              aria-describedby={
+                validation.experience ? undefined : "experience-error"
+              }
+              aria-label="FE 경력 연차"
+              aria-required="true">
+              <option value="">선택하세요</option>
+              <option value="junior">{"0-3년차"}</option>
+              <option value="mid">{"4-7년차"}</option>
+              <option value="senior">{"8년차 이상"}</option>
+            </Select>
+            {!validation.experience && (
+              <SreenReader
+                id="experience-error"
+                role="alert"
+                aria-live="polite">
+                경력 연차를 선택해주세요
+              </SreenReader>
+            )}
+          </>
         )}
       </WithLabel>
       <WithLabel label="GitHub 링크 (선택)">
         {(label) => (
           <Input
             id={label}
-            type="text"
+            type="url"
             name="github"
             value={formData.github}
             onChange={changeFormData}
-            aria-invalid={formData.github ? "false" : "true"}
-            aria-errormessage="github-error"
+            tabIndex={5}
+            aria-label="GitHub 링크 (선택)"
+            aria-invalid="false"
+            aria-describedby="github-hint"
           />
         )}
       </WithLabel>
+      <SreenReader id="github-hint">
+        GitHub 프로필 링크를 입력하세요
+      </SreenReader>
       {children(canSubmit)}
     </FormLayout>
   );
