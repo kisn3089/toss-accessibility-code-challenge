@@ -22,4 +22,9 @@ export const ButtonAtom = styled.button<{ $colorProperties: ColorProperties }>`
     background-color: ${({ theme }) => theme.palette.gray_light};
     cursor: not-allowed;
   }
+
+  &:focus {
+    border: none;
+    outline: 1px solid ${({ theme }) => theme.palette.red};
+  }
 `;
