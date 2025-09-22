@@ -2,7 +2,7 @@ import { theme } from "../../../styles/theme";
 import { ButtonAtom } from "./Button.style";
 import type { ButtonProps, Mode, ColorProperties } from "./Button.type";
 
-// TODO: Mode 좀 더 직관적인 네이밍으로 변경 필요
+// TODO: primary, secondary 좀 더 직관적인 네이밍으로 변경 필요
 const modeProperties: Record<Mode, ColorProperties> = {
   primary: {
     color: theme.palette.white,
@@ -20,10 +20,11 @@ const Button = ({
   customStyle,
   ...buttonProps
 }: ButtonProps) => {
-  const style = { ...modeProperties[mode], ...customStyle };
-
   return (
-    <ButtonAtom {...buttonProps} style={style}>
+    <ButtonAtom
+      $colorProperties={modeProperties[mode]}
+      {...buttonProps}
+      style={customStyle}>
       {children}
     </ButtonAtom>
   );
