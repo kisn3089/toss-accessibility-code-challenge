@@ -1,35 +1,59 @@
 import { createContext, useState, useCallback } from "react";
-import type { ModalContext } from "../../../types/modal/ModalContext.type";
+import type {
+  CloneElementWithResolver,
+  ModalContext,
+  PromisifyElement,
+  ReturnModalElements,
+} from "../../../types/modal/ModalContext.type";
 import React from "react";
 
-const ModalContext = createContext<ModalContext | null>(null);
+const ModalContexts = createContext<ModalContext | null>(null);
 
 export const useModal = (): ModalContext => {
-  const modalCtx = React.useContext(ModalContext);
-  if (!modalCtx) {
+  const context = React.useContext(ModalContexts);
+  if (!context) {
     throw new Error("useModal must be used within a ModalProvider");
   }
-  return modalCtx;
+  return context;
 };
 
 export const ModalProvider = ({ children }: React.PropsWithChildren) => {
-  const [modalElements, setModalElements] = useState<React.ReactNode[]>([]);
+  const [modalElements, setModalElements] = useState<React.ReactElement[]>([]);
 
-  const getModals = useCallback(
-    (): React.ReactNode[] => modalElements,
+  const getModals: ReturnModalElements = useCallback(
+    (): React.ReactElement[] => modalElements,
     [modalElements]
   );
 
-  const push = useCallback(
-    (modalElement: React.ReactNode): React.ReactNode[] => {
-      const pushedModals = [...modalElements, modalElement];
-      setModalElements(pushedModals);
-      return pushedModals;
+  const push: PromisifyElement = useCallback(
+    <ReturnData,>(element: React.ReactElement): Promise<ReturnData> => {
+      return new Promise<ReturnData>((resolve) => {
+        const clonedWithResolver = cloneElementWithResolver(element, resolve);
+        const pushedModals = [...modalElements, clonedWithResolver];
+        setModalElements(pushedModals);
+      });
     },
     [modalElements]
   );
 
-  const pop = useCallback((): React.ReactNode[] => {
+  const cloneElementWithResolver: CloneElementWithResolver = <
+    ReturnData,
+    Element
+  >(
+    element: React.ReactElement,
+    resolve: (returnData: ReturnData) => void
+  ): React.ReactElement<Element> => {
+    if (!React.isValidElement<Element>(element)) {
+      throw new Error("element is not ReactElement!");
+    }
+
+    return React.cloneElement(element, {
+      ...element.props,
+      onResolve: resolve,
+    });
+  };
+
+  const pop: ReturnModalElements = useCallback((): React.ReactElement[] => {
     const poppedModals = modalElements.slice(0, -1);
     setModalElements(poppedModals);
     return poppedModals;
@@ -40,7 +64,7 @@ export const ModalProvider = ({ children }: React.PropsWithChildren) => {
       setModalElements([]);
     }
     return [];
-  }, []);
+  }, [modalElements]);
 
   const contextValue: ModalContext = {
     getModals,
@@ -50,8 +74,8 @@ export const ModalProvider = ({ children }: React.PropsWithChildren) => {
   };
 
   return (
-    <ModalContext.Provider value={contextValue}>
+    <ModalContexts.Provider value={contextValue}>
       <>{children}</>
-    </ModalContext.Provider>
+    </ModalContexts.Provider>
   );
 };
