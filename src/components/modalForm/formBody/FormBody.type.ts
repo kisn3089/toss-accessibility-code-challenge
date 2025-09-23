@@ -8,7 +8,6 @@ export interface ModalFormData {
   github?: string;
 }
 
-export type SubmitStatus = "idle" | "submitting" | "error" | "success";
 export type Validations = [
   React.RefObject<HTMLInputElement | HTMLSelectElement | null>,
   (value: string) => boolean

@@ -60,9 +60,8 @@ export const ModalProvider = ({ children }: React.PropsWithChildren) => {
   }, [modalElements]);
 
   const close = useCallback((): [] => {
-    if (modalElements.length > 0) {
-      setModalElements([]);
-    }
+    if (modalElements.length > 0) setModalElements([]);
+
     return [];
   }, [modalElements]);
 

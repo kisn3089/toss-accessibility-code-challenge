@@ -12,22 +12,17 @@ import {
   type Errors,
   type Experience,
   type ModalFormData,
-  type SubmitStatus,
   type Validations,
 } from "./FormBody.type";
 
 type FormBodyProps = {
   onResolve: <T>(returnData: T) => void;
-  children: (
-    loading: boolean,
-    submitAttempted: SubmitStatus
-  ) => React.ReactNode;
+  children: (loading: boolean) => React.ReactNode;
 };
 export const FormBody = ({ children, onResolve }: FormBodyProps) => {
   const { pop } = useModal();
   const [isPending, startTransition] = React.useTransition();
   const [errors, setErrors] = React.useState<Errors>();
-  const [submitStatus, setSubmitStatus] = React.useState<SubmitStatus>("idle");
 
   const nameRef = React.useRef<HTMLInputElement>(null);
   const emailRef = React.useRef<HTMLInputElement>(null);
@@ -52,29 +47,26 @@ export const FormBody = ({ children, onResolve }: FormBodyProps) => {
 
   const validator = (): boolean => {
     const validationErrors: Errors = {};
-    const resultValidate = validations.every(([ref, validtor]) => {
-      const isValid = validtor(ref.current?.value ?? "");
-      if (!isValid && ref.current?.name) {
-        const validateKey = ref.current?.name as RequiredKeys<ModalFormData>;
-        validationErrors[validateKey] = errorMessages[validateKey];
-        ref.current?.focus();
-      }
+    const isFormValid = validations.every(([ref, validtor]) => {
+      const hasPassed = validtor(ref.current?.value ?? "");
+      if (hasPassed) return true;
 
-      return isValid;
+      const invalidKey = ref.current?.name as RequiredKeys<ModalFormData>;
+      validationErrors[invalidKey] = errorMessages[invalidKey];
+      ref.current?.focus();
+      return false;
     });
 
     if (Object.values(validationErrors).length > 0) setErrors(validationErrors);
-    return resultValidate;
+    return isFormValid;
   };
 
-  const formSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  const onFormSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
     if (!validator()) return;
 
     startTransition(async () => {
-      setSubmitStatus("submitting");
-
       const formData: ModalFormData = {
         name: nameRef.current?.value || "",
         email: emailRef.current?.value || "",
@@ -91,7 +83,7 @@ export const FormBody = ({ children, onResolve }: FormBodyProps) => {
     <FormLayout
       role="form"
       aria-label="신청서"
-      onSubmit={formSubmit}
+      onSubmit={onFormSubmit}
       noValidate>
       <WithLabel label="이름 / 닉네임">
         {(label) => (
@@ -104,6 +96,7 @@ export const FormBody = ({ children, onResolve }: FormBodyProps) => {
               min={2}
               maxLength={20}
               tabIndex={2}
+              required
               aria-required="true"
               aria-label="이름 입력란"
               aria-invalid={errors?.name ? "false" : "true"}
@@ -130,6 +123,7 @@ export const FormBody = ({ children, onResolve }: FormBodyProps) => {
               min={5}
               maxLength={50}
               tabIndex={3}
+              required
               aria-required="true"
               aria-label="이메일 입력란"
               aria-invalid={errors?.email ? "false" : "true"}
@@ -153,11 +147,12 @@ export const FormBody = ({ children, onResolve }: FormBodyProps) => {
               id={label}
               name="experience"
               tabIndex={4}
-              aria-invalid={errors?.experience ? "false" : "true"}
-              aria-describedby={"experience-error"}
+              required
               aria-label="FE 경력 연차 선택란"
+              aria-describedby={"experience-error"}
+              aria-invalid={errors?.experience ? "false" : "true"}
               aria-required="true">
-              <option value="">선택하세요</option>
+              <option value="">{"선택하세요"}</option>
               <option value="junior">{"0-3년차"}</option>
               <option value="mid">{"4-7년차"}</option>
               <option value="senior">{"8년차 이상"}</option>
@@ -187,26 +182,10 @@ export const FormBody = ({ children, onResolve }: FormBodyProps) => {
         )}
       </WithLabel>
       <SreenReader id="github-hint">
-        GitHub 프로필 링크를 입력하세요
+        {"GitHub 프로필 링크를 입력하세요"}
       </SreenReader>
 
-      <SreenReader
-        role="alert"
-        aria-live="assertive"
-        aria-atomic="true"
-        readCondition={submitStatus === "submitting"}>
-        신청서 제출중...
-      </SreenReader>
-
-      <SreenReader
-        role="alert"
-        aria-live="assertive"
-        aria-atomic="true"
-        readCondition={!errors && submitStatus === "success"}>
-        신청서 제출에 성공했습니다.
-      </SreenReader>
-
-      {children(isPending, submitStatus)}
+      {children(isPending)}
     </FormLayout>
   );
 };
