@@ -1,7 +1,7 @@
 import React from "react";
 import { FormLayout } from "./FormBody.style";
-import { WithLabel } from "../withLabel/WithLabel";
-import { Input, Select } from "../withLabel/WithLabel.style";
+import { WithLabel } from "../../common/withLabel/WithLabel";
+import { Input, Select } from "../../common/withLabel/WithLabel.style";
 import { formValidator } from "../../../utils/validation/validator";
 import { SreenReader } from "../../common/ScreenReader";
 import { useModal } from "../../modal/provider/ModalProvider";
@@ -14,6 +14,8 @@ import {
   type ModalFormData,
   type Validations,
 } from "./FormBody.type";
+import { WithLabel } from "../../common/withLabel/WithLabel";
+import { Input, Select } from "../../common/withLabel/WithLabel.style";
 
 type FormBodyProps = {
   onResolve: <T>(returnData: T) => void;

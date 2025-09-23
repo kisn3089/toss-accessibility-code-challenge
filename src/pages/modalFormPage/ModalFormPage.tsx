@@ -8,7 +8,7 @@ export const ModalFormPage = () => {
   const { push } = useModal();
 
   const addModal = async () => {
-    const pushedResult = await push<FormData>(<ModalForm />);
+    const pushedResult = await push<ModalFormData>(<ModalForm />);
     console.log("pushedResult: ", pushedResult);
   };
 
