@@ -5,6 +5,7 @@ import FormFooter from "../footer/FormFooter";
 import { FormBody } from "../formBody/FormBody";
 
 type ModalFormProps = { onResolve?: <T>(returnData: T) => void };
+
 export const ModalForm = ({ onResolve }: ModalFormProps) => {
   if (!onResolve) return null;
 

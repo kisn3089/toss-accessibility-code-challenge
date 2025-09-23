@@ -5,6 +5,12 @@ import React from "react";
 export const Overlay = () => {
   const { getModals, close } = useModal();
 
+  // 모달 open 시 직전 포커싱된 element를 캡쳐, unmount 시 캡쳐한 element에 focus. (최초 1회 실행)
+  React.useEffect(() => {
+    const previousActiveElement = document.activeElement;
+    return () => (previousActiveElement as HTMLElement).focus();
+  }, []);
+
   React.useEffect(() => {
     // ESC 눌렀을 때 close() 하도록 구현.
     const onKeyboardEvent = (e: KeyboardEvent) => {
@@ -31,7 +37,7 @@ export const Overlay = () => {
 
   return (
     <OverlayLayout onClick={onOverlayClick}>
-      <ModalFormLayout>
+      <ModalFormLayout className="overlay">
         {getModals().map((ModalComponent, index) => (
           <div key={index}>{ModalComponent}</div>
         ))}
