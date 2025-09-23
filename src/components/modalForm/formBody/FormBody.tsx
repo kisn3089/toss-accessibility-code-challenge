@@ -2,32 +2,32 @@ import React from "react";
 import { FormLayout } from "./FormBody.style";
 import { WithLabel } from "../withLabel/WithLabel";
 import { Input, Select } from "../withLabel/WithLabel.style";
-import { validtor } from "../../../utils/validation/validator";
+import { formValidator } from "../../../utils/validation/validator";
 import { SreenReader } from "../../common/ScreenReader";
 import { useModal } from "../../modal/provider/ModalProvider";
 import { sleep } from "../../../utils/sleep";
-
-type Experience = "junior" | "mid" | "senior";
-type Validations = [
-  React.RefObject<HTMLInputElement | HTMLSelectElement | null>,
-  (value: string) => boolean
-][];
-
-export interface FormData {
-  name: string;
-  email: string;
-  experience: Experience;
-  github: string;
-}
+import type { RequiredKeys } from "../../../types/hepler.type";
+import {
+  errorMessages,
+  type Errors,
+  type Experience,
+  type ModalFormData,
+  type SubmitStatus,
+  type Validations,
+} from "./FormBody.type";
 
 type FormBodyProps = {
   onResolve: <T>(returnData: T) => void;
-  children: (loading: boolean, submitAttempted: boolean) => React.ReactNode;
+  children: (
+    loading: boolean,
+    submitAttempted: SubmitStatus
+  ) => React.ReactNode;
 };
 export const FormBody = ({ children, onResolve }: FormBodyProps) => {
   const { pop } = useModal();
   const [isPending, startTransition] = React.useTransition();
-  const [submitAttempted, setSubmitAttempted] = React.useState(false);
+  const [errors, setErrors] = React.useState<Errors>();
+  const [submitStatus, setSubmitStatus] = React.useState<SubmitStatus>("idle");
 
   const nameRef = React.useRef<HTMLInputElement>(null);
   const emailRef = React.useRef<HTMLInputElement>(null);
@@ -35,36 +35,55 @@ export const FormBody = ({ children, onResolve }: FormBodyProps) => {
   const githubRef = React.useRef<HTMLInputElement>(null);
 
   const validations: Validations = [
-    [nameRef, validtor.isNotEmpty],
-    [emailRef, validtor.isEmailForm],
-    [experienceRef, validtor.isNotEmpty],
+    [
+      nameRef,
+      (name) =>
+        formValidator.notEmpty(name) &&
+        formValidator.lengthInRange(name, 2, 20),
+    ],
+    [
+      emailRef,
+      (email) =>
+        formValidator.emailRegex(email) &&
+        formValidator.lengthInRange(email, 5, 50),
+    ],
+    [experienceRef, formValidator.notEmpty],
   ];
 
-  const validator = (): boolean =>
-    validations.every(([ref, validtor]) => {
+  const validator = (): boolean => {
+    const validationErrors: Errors = {};
+    const resultValidate = validations.every(([ref, validtor]) => {
       const isValid = validtor(ref.current?.value ?? "");
-      if (!isValid) ref.current?.focus();
+      if (!isValid && ref.current?.name) {
+        const validateKey = ref.current?.name as RequiredKeys<ModalFormData>;
+        validationErrors[validateKey] = errorMessages[validateKey];
+        ref.current?.focus();
+      }
 
       return isValid;
     });
 
+    if (Object.values(validationErrors).length > 0) setErrors(validationErrors);
+    return resultValidate;
+  };
+
   const formSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
-    startTransition(async () => {
-      setSubmitAttempted(true);
+    if (!validator()) return;
 
-      const formData: FormData = {
+    startTransition(async () => {
+      setSubmitStatus("submitting");
+
+      const formData: ModalFormData = {
         name: nameRef.current?.value || "",
         email: emailRef.current?.value || "",
         experience: experienceRef.current?.value as Experience,
         github: githubRef.current?.value || "",
       };
 
-      if (validator()) {
-        await sleep(() => onResolve<FormData>(formData), 1500);
-        pop();
-      }
+      await sleep(() => onResolve<ModalFormData>(formData), 1500);
+      pop();
     });
   };
 
@@ -86,14 +105,17 @@ export const FormBody = ({ children, onResolve }: FormBodyProps) => {
               maxLength={20}
               tabIndex={2}
               aria-required="true"
-              //   aria-invalid={validation.name ? "false" : "true"}
-              //   aria-describedby={validation.name ? undefined : "name-error"}
+              aria-label="이름 입력란"
+              aria-invalid={errors?.name ? "false" : "true"}
+              aria-describedby={"name-error"}
             />
-            {/* {!validation.name && submitAttempted && (
-              <SreenReader id="name-error" role="alert" aria-live="assertive">
-                이름을 입력해주세요
-              </SreenReader>
-            )} */}
+            <SreenReader
+              id="name-error"
+              role="alert"
+              aria-live="assertive"
+              readCondition={Boolean(errors?.name)}>
+              {errorMessages["name"]}
+            </SreenReader>
           </>
         )}
       </WithLabel>
@@ -109,14 +131,17 @@ export const FormBody = ({ children, onResolve }: FormBodyProps) => {
               maxLength={50}
               tabIndex={3}
               aria-required="true"
-              //   aria-invalid={validation.email ? "false" : "true"}
-              //   aria-describedby={validation.email ? undefined : "email-error"}
+              aria-label="이메일 입력란"
+              aria-invalid={errors?.email ? "false" : "true"}
+              aria-describedby={"email-error"}
             />
-            {/* {!validation.email && submitAttempted && (
-              <SreenReader id="email-error" role="alert" aria-live="assertive">
-                이메일 형식으로 입력해주세요
-              </SreenReader>
-            )} */}
+            <SreenReader
+              id="email-error"
+              role="alert"
+              aria-live="assertive"
+              readCondition={Boolean(errors?.email)}>
+              {errorMessages["email"]}
+            </SreenReader>
           </>
         )}
       </WithLabel>
@@ -128,25 +153,22 @@ export const FormBody = ({ children, onResolve }: FormBodyProps) => {
               id={label}
               name="experience"
               tabIndex={4}
-              //   aria-invalid={validation.experience ? "false" : "true"}
-              //   aria-describedby={
-              //     validation.experience ? undefined : "experience-error"
-              //   }
-              aria-label="FE 경력 연차"
+              aria-invalid={errors?.experience ? "false" : "true"}
+              aria-describedby={"experience-error"}
+              aria-label="FE 경력 연차 선택란"
               aria-required="true">
               <option value="">선택하세요</option>
               <option value="junior">{"0-3년차"}</option>
               <option value="mid">{"4-7년차"}</option>
               <option value="senior">{"8년차 이상"}</option>
             </Select>
-            {/* {!validation.experience && submitAttempted && (
-              <SreenReader
-                id="experience-error"
-                role="alert"
-                aria-live="assertive">
-                경력 연차를 선택해주세요
-              </SreenReader>
-            )} */}
+            <SreenReader
+              id="experience-error"
+              role="alert"
+              aria-live="assertive"
+              readCondition={Boolean(errors?.experience)}>
+              {errorMessages["experience"]}
+            </SreenReader>
           </>
         )}
       </WithLabel>
@@ -168,16 +190,23 @@ export const FormBody = ({ children, onResolve }: FormBodyProps) => {
         GitHub 프로필 링크를 입력하세요
       </SreenReader>
 
-      {/* 제출 시 유효성 검증 실패 전체 피드백 */}
-      {/* {submitAttempted && !canSubmit && (
-        <SreenReader role="alert" aria-live="assertive" aria-atomic="true">
-          폼 제출에 실패했습니다.{" "}
-          {Object.entries(validation).filter(([, isValid]) => !isValid).length}
-          개의 필수 항목을 확인해주세요.
-        </SreenReader>
-      )} */}
+      <SreenReader
+        role="alert"
+        aria-live="assertive"
+        aria-atomic="true"
+        readCondition={submitStatus === "submitting"}>
+        신청서 제출중...
+      </SreenReader>
 
-      {children(isPending, submitAttempted)}
+      <SreenReader
+        role="alert"
+        aria-live="assertive"
+        aria-atomic="true"
+        readCondition={!errors && submitStatus === "success"}>
+        신청서 제출에 성공했습니다.
+      </SreenReader>
+
+      {children(isPending, submitStatus)}
     </FormLayout>
   );
 };

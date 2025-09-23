@@ -2,7 +2,7 @@ import { useModal } from "../../components/modal/provider/ModalProvider";
 import { ModalForm } from "../../components/modalForm/form/ModalForm";
 import { Center } from "./ModalFormPage.style";
 import Button from "../../components/atom/button/Button";
-import type { FormData } from "../../components/modalForm/formBody/FormBody";
+import type { ModalFormData } from "../../components/modalForm/formBody/FormBody.type";
 
 export const ModalFormPage = () => {
   const { push } = useModal();
@@ -15,7 +15,7 @@ export const ModalFormPage = () => {
   return (
     <Center>
       <Button tabIndex={1} onClick={addModal}>
-        {"신청 폼 작성하기"}
+        {"🚀 신청 폼 작성하기"}
       </Button>
     </Center>
   );

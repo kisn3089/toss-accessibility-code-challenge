@@ -4,7 +4,7 @@ import type {
   ModalContext,
   PromisifyElement,
   ReturnModalElements,
-} from "../../../types/modal/ModalContext.type";
+} from "./ModalProvider.type";
 import React from "react";
 
 const ModalContexts = createContext<ModalContext | null>(null);
