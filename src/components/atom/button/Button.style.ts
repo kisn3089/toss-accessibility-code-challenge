@@ -1,14 +1,18 @@
 import { styled } from "styled-components";
-import type { ColorProperties } from "./Button.type";
+import type { ColorProperties, Size } from "./Button.type";
 
-export const ButtonAtom = styled.button<{ $colorProperties: ColorProperties }>`
+export const ButtonAtom = styled.button<{
+  $colorProperties: ColorProperties;
+  $size: Size;
+}>`
   min-width: fit-content;
+  width: ${({ $size }) => ($size === "full" ? "100%" : "fit-content")};
   height: 36px;
   padding: 8px 16px;
   border: none;
   font-size: 0.875rem;
   font-weight: 600;
-  border-radius: 4px;
+  border-radius: 6px;
   cursor: pointer;
   background-color: ${({ $colorProperties }) =>
     $colorProperties.backgroundColor};

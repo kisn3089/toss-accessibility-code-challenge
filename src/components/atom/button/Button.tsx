@@ -17,16 +17,20 @@ const modeProperties: Record<Mode, ColorProperties> = {
 const Button = ({
   children,
   mode = "primary",
+  size = "fit",
   customStyle,
   ...buttonProps
 }: ButtonProps) => {
   return (
-    <ButtonAtom
-      $colorProperties={modeProperties[mode]}
-      {...buttonProps}
-      style={customStyle}>
-      {children}
-    </ButtonAtom>
+    <>
+      <ButtonAtom
+        $colorProperties={modeProperties[mode]}
+        $size={size}
+        {...buttonProps}
+        style={customStyle}>
+        {children}
+      </ButtonAtom>
+    </>
   );
 };
 
