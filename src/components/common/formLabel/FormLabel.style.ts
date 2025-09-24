@@ -15,9 +15,9 @@ export const Label = styled.label`
 // 공통 스타일 base
 const baseInputStyles = css`
   width: 100%;
-  height: 32px;
+  height: 36px;
   border: 1px solid ${({ theme }) => theme.palette.gray_light};
-  border-radius: 4px;
+  border-radius: 6px;
   padding: 4px 8px;
 
   &:focus {
