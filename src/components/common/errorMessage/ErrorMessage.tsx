@@ -1,11 +1,21 @@
-import { Message } from "./ErrorMessage.style";
+import { SreenReader } from "../ScreenReader";
+import { Message, Right } from "./ErrorMessage.style";
 
-type ErrorMessageProps = { showCondition?: boolean } & React.PropsWithChildren;
-export const ErrorMessge = ({
-  showCondition = true,
-  children,
-}: ErrorMessageProps) => {
-  if (!showCondition) return null;
+type ErrorMessageProps = {
+  message?: string;
+  ariaId?: string;
+};
 
-  return <Message>{children}</Message>;
+export const ErrorMessge = ({ message, ariaId }: ErrorMessageProps) => {
+  return (
+    <Right>
+      <Message>
+        <SreenReader id={ariaId} role="alert" aria-live="assertive">
+          {message}
+        </SreenReader>
+        {/** message = " " 오류 메시지 노출 시 layout-shift 방지 */}
+        {message || " "}
+      </Message>
+    </Right>
+  );
 };
