@@ -1,9 +1,12 @@
 import { styled } from "styled-components";
 
-export const FormSection = styled.section`
+export const FormSection = styled.section<{ $maxHeight?: number }>`
   min-width: 400px;
+  max-height: ${({ $maxHeight }) => `${$maxHeight}px`};
   display: flex;
   flex-direction: column;
+  overflow: scroll;
+  padding: 10px;
 `;
 export const FormHeader = styled.header``;
 

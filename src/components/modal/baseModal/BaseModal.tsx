@@ -9,8 +9,14 @@ import {
 type BaseModalProps = {
   title: string;
   announce: string;
+  maxHeight?: number;
 } & React.PropsWithChildren;
-const BaseModal = ({ children, title, announce }: BaseModalProps) => {
+const BaseModal = ({
+  children,
+  title,
+  announce,
+  maxHeight,
+}: BaseModalProps) => {
   const titleRef = React.useRef<HTMLHeadingElement>(null);
 
   // 모달 open 시 직전 포커싱된 element를 캡쳐, unmount 시 캡쳐한 element에 focus. (최초 1회 실행)
@@ -27,7 +33,8 @@ const BaseModal = ({ children, title, announce }: BaseModalProps) => {
       role="dialog"
       aria-modal="true"
       aria-labelledby="modal-form-title"
-      aria-describedby="modal-form-description">
+      aria-describedby="modal-form-description"
+      $maxHeight={maxHeight}>
       <FormHeader>
         <FormTitle ref={titleRef} id="modal-form-title" tabIndex={1}>
           {title}

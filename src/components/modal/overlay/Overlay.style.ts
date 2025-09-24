@@ -32,7 +32,7 @@ export const OverlayLayout = styled.div<{ $isLastIndex: boolean }>`
 
 export const ModalFormLayout = styled.main`
   box-shadow: ${({ theme }) => theme.palette.gray_light} 0 0 6px 2px;
-  padding: 28px;
+  padding: 18px;
   background-color: ${({ theme }) => theme.palette.white};
   border-radius: 12px;
   ${slideInShortEaseout}
