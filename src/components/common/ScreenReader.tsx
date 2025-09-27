@@ -1,18 +1,18 @@
 import type { HTMLAttributes } from "react";
 
-type SreenReaderProps = {
+type ScreenReaderProps = {
   readCondition?: boolean;
 } & HTMLAttributes<Element> &
   React.PropsWithChildren;
-export const SreenReader = ({
+export const ScreenReader = ({
   readCondition = true,
   children,
-  ...aria
-}: SreenReaderProps) => {
+  ...divProps
+}: ScreenReaderProps) => {
   if (!readCondition) return null;
 
   return (
-    <div {...aria} style={{ display: "none" }}>
+    <div {...divProps} style={{ display: "none" }}>
       {children}
     </div>
   );

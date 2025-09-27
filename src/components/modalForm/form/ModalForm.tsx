@@ -1,6 +1,6 @@
 import React from "react";
 import Button from "../../atom/button/Button";
-import { SreenReader } from "../../common/ScreenReader";
+import { ScreenReader } from "../../common/ScreenReader";
 import BaseModal from "../../modal/baseModal/BaseModal";
 import { useModal } from "../../modal/provider/ModalProvider";
 import {
@@ -50,9 +50,9 @@ export const ModalForm = ({ children, onResolve }: ModalFormProps) => {
               tabIndex={6}
               onClick={nested}>
               {"구독하기"}
-              <SreenReader id="subscribe" role="status" aria-live="assertive">
+              <ScreenReader id="subscribe" role="status" aria-live="assertive">
                 {"입력하신 이메일로 서비스 소식을 보내드려요."}
-              </SreenReader>
+              </ScreenReader>
             </Button>
             <Gap>
               <Button
@@ -64,9 +64,9 @@ export const ModalForm = ({ children, onResolve }: ModalFormProps) => {
                 aria-label="신청 취소하기"
                 aria-describedby="cancel">
                 {"취소"}
-                <SreenReader id="cancel" role="status" aria-live="assertive">
+                <ScreenReader id="cancel" role="status" aria-live="assertive">
                   {"작성한 내용이 저장되지 않고 창이 닫힙니다."}
-                </SreenReader>
+                </ScreenReader>
               </Button>
               <Button
                 type="submit"
@@ -77,19 +77,19 @@ export const ModalForm = ({ children, onResolve }: ModalFormProps) => {
                 aria-describedby="submit-help"
                 role="button">
                 {loading ? "제출 중.." : "제출하기"}
-                <SreenReader
+                <ScreenReader
                   id="submit-help"
                   role="status"
                   aria-live="assertive">
                   {"신청서 제출하기 버튼, 신청서를 검토 후 서버로 전송합니다."}
-                </SreenReader>
-                <SreenReader
+                </ScreenReader>
+                <ScreenReader
                   id="submitting"
                   role="status"
                   aria-live="assertive"
                   readCondition={loading}>
                   {"신청서 제출중..."}
-                </SreenReader>
+                </ScreenReader>
               </Button>
             </Gap>
           </FormFooter>

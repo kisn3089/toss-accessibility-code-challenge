@@ -9,7 +9,7 @@ import { useFormValidate } from "../../hooks/useFormValidate";
 import { sleep } from "../../utils/sleep";
 import { useModal } from "../modal/provider/ModalProvider";
 import Button from "../atom/button/Button";
-import { SreenReader } from "../common/ScreenReader";
+import { ScreenReader } from "../common/ScreenReader";
 import { ButtonGap, Caption, MaxSize } from "./SubscribeForm.style";
 
 const errorMessages = {
@@ -94,9 +94,9 @@ export const SubscribeForm = ({ onResolve }: SubscribeFormErrors) => {
               aria-label="구독 취소하기"
               aria-describedby="cancel">
               {"취소"}
-              <SreenReader id="cancel" role="status" aria-live="assertive">
+              <ScreenReader id="cancel" role="status" aria-live="assertive">
                 {"작성한 내용이 저장되지 않고 창이 닫힙니다."}
-              </SreenReader>
+              </ScreenReader>
             </Button>
             <Button
               type="submit"
@@ -108,16 +108,19 @@ export const SubscribeForm = ({ onResolve }: SubscribeFormErrors) => {
               aria-describedby="submit-help"
               role="button">
               {isPending ? "구독중.." : "구독하기"}
-              <SreenReader id="submit-help" role="status" aria-live="assertive">
+              <ScreenReader
+                id="submit-help"
+                role="status"
+                aria-live="assertive">
                 {"구독하기 버튼, 서버로 전송합니다."}
-              </SreenReader>
-              <SreenReader
+              </ScreenReader>
+              <ScreenReader
                 id="submitting"
                 role="status"
                 aria-live="assertive"
                 readCondition={isPending}>
                 {"구독중..."}
-              </SreenReader>
+              </ScreenReader>
             </Button>
           </ButtonGap>
         </MaxSize>

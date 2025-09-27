@@ -1,4 +1,4 @@
-import { SreenReader } from "../ScreenReader";
+import { ScreenReader } from "../ScreenReader";
 import { Message, Right } from "./ErrorMessage.style";
 
 type ErrorMessageProps = {
@@ -10,9 +10,9 @@ export const ErrorMessge = ({ message, ariaId }: ErrorMessageProps) => {
   return (
     <Right>
       <Message>
-        <SreenReader id={ariaId} role="alert" aria-live="assertive">
+        <ScreenReader id={ariaId} role="alert" aria-live="assertive">
           {message}
-        </SreenReader>
+        </ScreenReader>
         {/** message = " " 오류 메시지 노출 시 layout-shift 방지 */}
         {message || " "}
       </Message>
