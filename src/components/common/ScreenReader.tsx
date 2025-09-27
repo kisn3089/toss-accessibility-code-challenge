@@ -1,4 +1,5 @@
 import type { HTMLAttributes } from "react";
+import Hidden from "./hidden/Hidden";
 
 type ScreenReaderProps = {
   readCondition?: boolean;
@@ -12,8 +13,8 @@ export const ScreenReader = ({
   if (!readCondition) return null;
 
   return (
-    <div {...divProps} style={{ display: "none" }}>
-      {children}
-    </div>
+    <Hidden>
+      <div {...divProps}>{children}</div>
+    </Hidden>
   );
 };

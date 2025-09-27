@@ -33,7 +33,7 @@ export const Overlay = () => {
             onClick={onOverlayClick}
             $isLastIndex={indicateMe}
             inert={!indicateMe}>
-            <ModalFormLayout>{ModalComponent}</ModalFormLayout>
+            <ModalFormLayout open>{ModalComponent}</ModalFormLayout>
           </OverlayLayout>
         );
       })}

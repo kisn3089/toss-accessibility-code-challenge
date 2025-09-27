@@ -1,19 +1,25 @@
-import { Column, Label, Optional, RowGap } from "./FormLabel.style";
+import { Column, Label, Required } from "./FormLabel.style";
 
 type FormLabelProps = {
   label: string;
-  optional?: boolean;
-  children: (label: string, ariaId?: string) => React.ReactNode;
+  id: string;
+  required?: boolean;
+  children: (id: string) => React.ReactNode;
 };
 
-export const FormLabel = ({ label, optional, children }: FormLabelProps) => {
+export const FormLabel = ({
+  id,
+  label,
+  required,
+  children,
+}: FormLabelProps) => {
   return (
     <Column>
-      <RowGap>
-        <Label htmlFor={label}>{label}</Label>
-        <Optional>{optional && "(선택)"}</Optional>
-      </RowGap>
-      {children(label)}
+      <Label htmlFor={id}>
+        {label}
+        {required && <Required aria-hidden="true">{"*"}</Required>}
+      </Label>
+      {children(id)}
     </Column>
   );
 };

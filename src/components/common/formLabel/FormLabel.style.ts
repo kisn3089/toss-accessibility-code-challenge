@@ -6,21 +6,16 @@ export const Column = styled.div`
   gap: 8px;
 `;
 
-export const RowGap = styled.div`
-  display: flex;
-  align-items: baseline;
-  gap: 0 4px;
-`;
-
 export const Label = styled.label`
   width: fit-content;
   font-size: 0.875rem;
   font-weight: 600;
 `;
 
-export const Optional = styled.span`
+export const Required = styled.span`
   font-size: 0.75rem;
-  color: ${({ theme }) => theme.palette.gray_deep};
+  color: ${({ theme }) => theme.palette.blue};
+  padding-left: 2px;
 `;
 
 // 공통 스타일 base

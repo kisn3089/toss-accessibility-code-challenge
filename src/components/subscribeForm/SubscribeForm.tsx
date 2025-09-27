@@ -2,7 +2,7 @@ import React from "react";
 import { FormLabel } from "../common/formLabel/FormLabel";
 import BaseModal from "../modal/baseModal/BaseModal";
 import { FormLayout } from "../modalForm/formBody/FormBody.style";
-import { EmailInput } from "../common/inputs/emailInput";
+import { EmailInput } from "../common/inputs/EmailInput";
 import { type Validations } from "../modalForm/formBody/FormBody.type";
 import { formValidator } from "../../utils/validation/validator";
 import { useFormValidate } from "../../hooks/useFormValidate";
@@ -10,7 +10,9 @@ import { sleep } from "../../utils/sleep";
 import { useModal } from "../modal/provider/ModalProvider";
 import Button from "../atom/button/Button";
 import { ScreenReader } from "../common/ScreenReader";
-import { ButtonGap, Caption, MaxSize } from "./SubscribeForm.style";
+import { ButtonGap, MaxSize } from "./SubscribeForm.style";
+import { FormNotice } from "../common/formNotice/FormNotice";
+import subscribeNotice from "../../notice/subscribe";
 
 const errorMessages = {
   email: "올바른 이메일 형식으로 입력해주세요.",
@@ -69,28 +71,28 @@ export const SubscribeForm = ({ onResolve }: SubscribeFormErrors) => {
         onSubmit={onFormSubmit}
         noValidate>
         <MaxSize>
-          <FormLabel label="이메일">
-            {(label) => (
+          <FormLabel label="이메일" id="email-input" required>
+            {(id) => (
               <EmailInput
                 ref={emailRef}
-                id={label}
+                id={id}
                 name="email"
                 errorMessage={errors?.email && errorMessages.email}
-                tabIndex={2}
-                aria-label="이메일을 입력해주세요."
                 aria-describedby={"email-valid"}
               />
             )}
           </FormLabel>
-          <SubscribeCaption />
+          <FormNotice
+            ariaLabelId="privacy-notice"
+            heading={subscribeNotice.heading}
+            content={subscribeNotice.content}
+          />
           <ButtonGap>
             <Button
               type="button"
               mode="secondary"
               size="full"
               onClick={onCloseModal}
-              tabIndex={7}
-              role="button"
               aria-label="구독 취소하기"
               aria-describedby="cancel">
               {"취소"}
@@ -102,11 +104,9 @@ export const SubscribeForm = ({ onResolve }: SubscribeFormErrors) => {
               type="submit"
               mode="primary"
               size="full"
-              tabIndex={8}
               disabled={isPending}
               aria-labelledby="submitting"
-              aria-describedby="submit-help"
-              role="button">
+              aria-describedby="submit-help">
               {isPending ? "구독중.." : "구독하기"}
               <ScreenReader
                 id="submit-help"
@@ -126,15 +126,5 @@ export const SubscribeForm = ({ onResolve }: SubscribeFormErrors) => {
         </MaxSize>
       </FormLayout>
     </BaseModal>
-  );
-};
-
-const SubscribeCaption = () => {
-  return (
-    <Caption>
-      {`[개인정보 처리 및 이용 안내]
-저희는 구독 신청을 위해 입력하신 이메일 주소를 소중히 관리합니다. 수집된 이메일 정보는 뉴스레터 발송, 기부 관련 안내, 캠페인 소식 전달 이외의 목적으로는 절대 사용되지 않으며, 법령에 따른 보관 기간 이후 안전하게 파기됩니다.
-또한, 이용자의 명시적 동의 없이 제3자에게 제공되지 않으며, 개인정보 보호법 및 관련 규정을 철저히 준수합니다. 이메일 정보의 이용 목적은 투명하게 공개되며, 언제든 구독 해지를 요청하실 수 있습니다. 구독 해지 시 모든 개인정보는 즉시 삭제 처리됩니다.`}
-    </Caption>
   );
 };

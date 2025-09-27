@@ -1,6 +1,6 @@
 import React from "react";
 import { Input } from "../formLabel/FormLabel.style";
-import { ErrorMessge } from "../errorMessage/ErrorMessage";
+import { ErrorMessage } from "../errorMessage/ErrorMessage";
 
 type UrlInputProps = {
   errorMessage?: string;
@@ -16,7 +16,7 @@ export const UrlInput = React.forwardRef<HTMLInputElement, UrlInputProps>(
           aria-invalid={Boolean(errorMessage) ? "true" : "false"}
           {...inputProps}
         />
-        <ErrorMessge
+        <ErrorMessage
           ariaId={inputProps["aria-describedby"]}
           message={errorMessage}
         />

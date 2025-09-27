@@ -1,6 +1,6 @@
 import React from "react";
 import { Input } from "../formLabel/FormLabel.style";
-import { ErrorMessge } from "../errorMessage/ErrorMessage";
+import { ErrorMessage } from "../errorMessage/ErrorMessage";
 
 type EmailInputProps = {
   errorMessage?: string;
@@ -12,14 +12,14 @@ export const EmailInput = React.forwardRef<HTMLInputElement, EmailInputProps>(
         <Input
           ref={ref}
           type="email"
-          min={5}
+          minLength={5}
           maxLength={50}
           required
           aria-required="true"
           aria-invalid={Boolean(errorMessage) ? "true" : "false"}
           {...inputProps}
         />
-        <ErrorMessge
+        <ErrorMessage
           ariaId={inputProps["aria-describedby"]}
           message={errorMessage}
         />
