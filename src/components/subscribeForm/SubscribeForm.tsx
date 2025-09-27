@@ -18,7 +18,6 @@ const errorMessages = {
 
 export type SubsribeFormData = {
   email: string;
-  donation?: number;
 };
 
 type SubscribeFormErrors = {
@@ -30,7 +29,6 @@ export const SubscribeForm = ({ onResolve }: SubscribeFormErrors) => {
 
   const [isPending, startTransition] = React.useTransition();
   const emailRef = React.useRef<HTMLInputElement>(null);
-  const donationRef = React.useRef<HTMLInputElement>(null);
   const { pop } = useModal();
 
   const validation: Validations = [[emailRef, formValidator.emailValidator]];
@@ -53,7 +51,6 @@ export const SubscribeForm = ({ onResolve }: SubscribeFormErrors) => {
     startTransition(async () => {
       const formData: SubsribeFormData = {
         email: emailRef.current?.value ?? "",
-        donation: Number(donationRef.current?.value) ?? undefined,
       };
 
       await sleep(() => onResolve<SubsribeFormData>(formData), 1500);
@@ -65,7 +62,7 @@ export const SubscribeForm = ({ onResolve }: SubscribeFormErrors) => {
     <BaseModal
       title="구독하기"
       announce="입력하신 이메일로 서비스 소식을 보내드려요."
-      maxHeight={420}>
+      maxHeight={320}>
       <FormLayout
         role="form"
         aria-label="구독하기"
@@ -77,20 +74,11 @@ export const SubscribeForm = ({ onResolve }: SubscribeFormErrors) => {
               <EmailInput
                 ref={emailRef}
                 id={label}
+                name="email"
                 errorMessage={errors?.email && errorMessages.email}
                 tabIndex={2}
                 aria-label="이메일을 입력해주세요."
                 aria-describedby={"email-valid"}
-              />
-            )}
-          </FormLabel>
-          <FormLabel label="기부">
-            {(label) => (
-              <EmailInput
-                ref={donationRef}
-                id={label}
-                tabIndex={3}
-                aria-label="기부할 금액을 입력해주세요."
               />
             )}
           </FormLabel>

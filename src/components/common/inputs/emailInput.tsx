@@ -12,12 +12,11 @@ export const EmailInput = React.forwardRef<HTMLInputElement, EmailInputProps>(
         <Input
           ref={ref}
           type="email"
-          name="email"
           min={5}
           maxLength={50}
           required
           aria-required="true"
-          aria-invalid={Boolean(errorMessage) ? "false" : "true"}
+          aria-invalid={Boolean(errorMessage) ? "true" : "false"}
           {...inputProps}
         />
         <ErrorMessge

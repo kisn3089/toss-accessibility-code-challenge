@@ -70,12 +70,14 @@ export const FormBody = ({ children, onResolve }: FormBodyProps) => {
       role="form"
       aria-label="신청서"
       onSubmit={onFormSubmit}
-      noValidate>
+      noValidate
+      aria-labelledby="modal-form-title">
       <FormLabel label="이름 / 닉네임">
         {(label) => (
           <NameInput
             ref={nameRef}
             id={label}
+            name="name"
             errorMessage={errors?.name && errorMessages.name}
             tabIndex={2}
             aria-label="이름 / 닉네임을 입력해주세요."
@@ -88,6 +90,7 @@ export const FormBody = ({ children, onResolve }: FormBodyProps) => {
           <EmailInput
             ref={emailRef}
             id={label}
+            name="email"
             errorMessage={errors?.email && errorMessages.email}
             tabIndex={3}
             aria-label="이메일을 입력해주세요."
@@ -99,15 +102,15 @@ export const FormBody = ({ children, onResolve }: FormBodyProps) => {
         {(label) => (
           <SelectInput
             ref={experienceRef}
-            name="experience"
             id={label}
+            name="experience"
             tabIndex={4}
             errorMessage={errors?.experience && errorMessages.experience}
             aria-describedby={"experience-valid"}
           />
         )}
       </FormLabel>
-      <FormLabel label="GitHub 링크 (선택)">
+      <FormLabel label="GitHub 링크" optional>
         {(label) => (
           <UrlInput
             ref={githubRef}

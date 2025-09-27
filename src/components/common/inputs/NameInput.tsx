@@ -12,12 +12,11 @@ export const NameInput = React.forwardRef<HTMLInputElement, NameInputProps>(
         <Input
           ref={ref}
           type="text"
-          name="name"
           min={2}
           maxLength={20}
           required
           aria-required="true"
-          aria-invalid={Boolean(errorMessage) ? "false" : "true"}
+          aria-invalid={Boolean(errorMessage) ? "true" : "false"}
           {...inputProps}
         />
         <ErrorMessge

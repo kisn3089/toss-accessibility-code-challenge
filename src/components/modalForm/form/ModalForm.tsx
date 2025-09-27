@@ -1,3 +1,4 @@
+import React from "react";
 import Button from "../../atom/button/Button";
 import { SreenReader } from "../../common/ScreenReader";
 import BaseModal from "../../modal/baseModal/BaseModal";
@@ -9,6 +10,7 @@ import {
 import FormFooter from "../footer/FormFooter";
 import { Gap } from "../footer/FormFooter.style";
 import { FormBody } from "../formBody/FormBody";
+import { Code } from "../../common/code/Code";
 
 type ModalFormProps = {
   onResolve?: <T>(returnData: T) => void;
@@ -16,6 +18,8 @@ type ModalFormProps = {
 
 export const ModalForm = ({ children, onResolve }: ModalFormProps) => {
   if (!onResolve) return null;
+  const [returnedFormData, setReturnedFormData] =
+    React.useState<SubsribeFormData | null>(null);
 
   const { pop, push } = useModal();
   const onCloseModal = () => {
@@ -25,13 +29,14 @@ export const ModalForm = ({ children, onResolve }: ModalFormProps) => {
 
   const nested = async () => {
     const pushedResult = await push<SubsribeFormData>(<SubscribeForm />);
-    console.log("nestedResult: ", pushedResult);
+    setReturnedFormData(pushedResult);
   };
 
   return (
     <BaseModal
       title="신청 폼"
       announce="이메일과 FE 경력 연차 등 간단한 정보를 입력해주세요.">
+      <Code codeData={returnedFormData} />
       <FormBody onResolve={onResolve}>
         {(loading) => (
           <FormFooter aria-label="폼 액션 버튼">
