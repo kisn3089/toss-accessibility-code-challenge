@@ -3,18 +3,18 @@ import { useModal } from "../provider/ModalProvider";
 import React from "react";
 
 export const Overlay = () => {
-  const { getModals, close, pop } = useModal();
+  const { getModals, pop } = useModal();
   const modalsLength = getModals().length;
 
   React.useEffect(() => {
-    // ESC 시 모든 모달 닫힘
+    // ESC 시 하나의 모달 닫힘
     const onKeyboardEvent = (e: KeyboardEvent) => {
-      if (e.key === "Escape" && getModals().length > 0) return close();
+      if (e.key === "Escape" && getModals().length > 0) return pop();
     };
 
     document.addEventListener("keydown", onKeyboardEvent);
     return () => document.removeEventListener("keydown", onKeyboardEvent);
-  }, [close, getModals]);
+  }, [pop, getModals]);
 
   if (modalsLength === 0) return null;
 
