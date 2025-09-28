@@ -1,83 +1,95 @@
 import Button from "../../atom/button/Button";
+import { SreenReader } from "../../common/ScreenReader";
 import BaseModal from "../../modal/baseModal/BaseModal";
+import { useModal } from "../../modal/provider/ModalProvider";
+import {
+  SubscribeForm,
+  type SubsribeFormData,
+} from "../../subscribeForm/SubscribeForm";
 import FormFooter from "../footer/FormFooter";
-import { WithLabel } from "../withLabel/WithLabel";
-import { Input, Select } from "../withLabel/WithLabel.style";
-import { FormLayout } from "./ModalForm.style";
-import React from "react";
+import { Gap } from "../footer/FormFooter.style";
+import { FormBody } from "../formBody/FormBody";
 
-export const ModalForm = () => {
+type ModalFormProps = {
+  onResolve?: <T>(returnData: T) => void;
+} & React.PropsWithChildren;
+
+export const ModalForm = ({ children, onResolve }: ModalFormProps) => {
+  if (!onResolve) return null;
+
+  const { pop, push } = useModal();
+  const onCloseModal = () => {
+    onResolve(null);
+    pop();
+  };
+
+  const nested = async () => {
+    const pushedResult = await push<SubsribeFormData>(<SubscribeForm />);
+    console.log("nestedResult: ", pushedResult);
+  };
+
   return (
     <BaseModal
       title="신청 폼"
       announce="이메일과 FE 경력 연차 등 간단한 정보를 입력해주세요.">
-      <Form>
-        <FormFooter>
-          <Button type="button" mode="secondary">
-            {"취소"}
-          </Button>
-          <Button type="submit" mode="primary">
-            {"제출하기"}
-          </Button>
-        </FormFooter>
-      </Form>
-    </BaseModal>
-  );
-};
-
-type Experience = "junior" | "mid" | "senior" | "";
-interface FormData {
-  name: string;
-  email: string;
-  experience: Experience;
-  github?: string;
-}
-
-const Form = ({ children }: React.PropsWithChildren) => {
-  const nameRef = React.useRef<HTMLInputElement>(null);
-  const emailRef = React.useRef<HTMLInputElement>(null);
-  const experienceRef = React.useRef<HTMLSelectElement>(null);
-  const githubRef = React.useRef<HTMLInputElement>(null);
-
-  const submitForm = (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-
-    const formData: FormData = {
-      name: nameRef.current?.value || "",
-      email: emailRef.current?.value || "",
-      experience: experienceRef.current?.value as Experience,
-      github: githubRef.current?.value || "",
-    };
-
-    console.log(formData);
-  };
-
-  return (
-    <FormLayout onSubmit={submitForm}>
-      <WithLabel label="이름 / 닉네임">
-        {(label) => <Input ref={nameRef} id={label} type="text" required />}
-      </WithLabel>
-      <WithLabel label="이메일">
-        {(label) => <Input ref={emailRef} id={label} type="email" required />}
-      </WithLabel>
-      <WithLabel label="FE 경력 연차">
-        {(label) => (
-          <Select
-            ref={experienceRef}
-            id={label}
-            aria-label="FE 경력 연차"
-            required>
-            <option value="">선택하세요</option>
-            <option value="junior">{"0-3년차"}</option>
-            <option value="mid">{"4-7년차"}</option>
-            <option value="senior">{"8년차 이상"}</option>
-          </Select>
+      <FormBody onResolve={onResolve}>
+        {(loading) => (
+          <FormFooter aria-label="폼 액션 버튼">
+            {children}
+            <Button
+              type="button"
+              mode="primary"
+              role="button"
+              aria-label="구독하기"
+              aria-describedby="subscribe"
+              tabIndex={6}
+              onClick={nested}>
+              {"구독하기"}
+              <SreenReader id="subscribe" role="status" aria-live="assertive">
+                {"입력하신 이메일로 서비스 소식을 보내드려요."}
+              </SreenReader>
+            </Button>
+            <Gap>
+              <Button
+                type="button"
+                mode="secondary"
+                onClick={onCloseModal}
+                tabIndex={7}
+                role="button"
+                aria-label="신청 취소하기"
+                aria-describedby="cancel">
+                {"취소"}
+                <SreenReader id="cancel" role="status" aria-live="assertive">
+                  {"작성한 내용이 저장되지 않고 창이 닫힙니다."}
+                </SreenReader>
+              </Button>
+              <Button
+                type="submit"
+                mode="primary"
+                tabIndex={8}
+                disabled={loading}
+                aria-labelledby="submitting"
+                aria-describedby="submit-help"
+                role="button">
+                {loading ? "제출 중.." : "제출하기"}
+                <SreenReader
+                  id="submit-help"
+                  role="status"
+                  aria-live="assertive">
+                  {"신청서 제출하기 버튼, 신청서를 검토 후 서버로 전송합니다."}
+                </SreenReader>
+                <SreenReader
+                  id="submitting"
+                  role="status"
+                  aria-live="assertive"
+                  readCondition={loading}>
+                  {"신청서 제출중..."}
+                </SreenReader>
+              </Button>
+            </Gap>
+          </FormFooter>
         )}
-      </WithLabel>
-      <WithLabel label="GitHub 링크 (선택)">
-        {(label) => <Input ref={githubRef} id={label} type="text" />}
-      </WithLabel>
-      {children}
-    </FormLayout>
+      </FormBody>
+    </BaseModal>
   );
 };

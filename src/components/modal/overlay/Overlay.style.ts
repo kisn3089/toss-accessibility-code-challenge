@@ -16,24 +16,24 @@ export const slideInShortEaseout = css`
   }
 `;
 
-export const OverlayLayout = styled.div`
+export const OverlayLayout = styled.div<{ $isLastIndex: boolean }>`
   width: 100%;
   height: 100%;
   position: fixed;
-  top: 0;
-  left: 0;
-  background-color: rgba(0, 0, 0, 0.5);
-  display: flex;
   align-items: center;
   justify-content: center;
+  top: 0;
+  left: 0;
+  background-color: ${({ $isLastIndex }) =>
+    $isLastIndex && "rgba(0, 0, 0, 0.5)"};
+  display: flex;
   z-index: 1000;
-  ${fadeInShortEaseout}
 `;
 
 export const ModalFormLayout = styled.main`
-  padding: 28px;
-  display: flex;
-  flex-direction: column;
+  box-shadow: ${({ theme }) => theme.palette.gray_light} 0 0 6px 2px;
+  padding: 18px;
   background-color: ${({ theme }) => theme.palette.white};
   border-radius: 12px;
+  ${slideInShortEaseout}
 `;
