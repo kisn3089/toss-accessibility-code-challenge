@@ -69,7 +69,7 @@ When creating PR descriptions, use the following format:
 **AS-IS**: [Current state]
 **TO-BE**: [New state]
 
-Files: [file paths with links if available]
+Files: [file paths with GitHub links when available - format as [`file_path`](https://github.com/kisn3089/toss-accessibility-code-challenge/tree/main/file_path)]
 - [Change details]
 - [Implementation notes]
 
@@ -89,6 +89,6 @@ Files: [file paths with links if available]
 
 - Use emojis for section headers (📋 🔄 🎯 🏗️ 🎨 ♿)
 - Structure with AS-IS/TO-BE format for clarity
-- Include file paths and links when possible
+- Include file paths as GitHub links when possible (format: [`file_path`](https://github.com/kisn3089/toss-accessibility-code-challenge/tree/main/file_path))
 - Focus on business value and technical impact
 - Highlight accessibility and design system changes
