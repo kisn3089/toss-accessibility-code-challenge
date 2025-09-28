@@ -1,5 +1,5 @@
 import React from "react";
-import { FormLayout } from "./FormBody.style";
+import { FormLayout, Fieldset } from "./FormBody.style";
 import { formValidator } from "../../../utils/validation/validator";
 import { FormLabel } from "../../common/formLabel/FormLabel";
 import { useModal } from "../../modal/provider/ModalProvider";
@@ -10,10 +10,12 @@ import {
   type Validations,
 } from "./FormBody.type";
 import { NameInput } from "../../common/inputs/NameInput";
-import { EmailInput } from "../../common/inputs/emailInput";
+import { EmailInput } from "../../common/inputs/EmailInput";
 import { SelectInput } from "../../common/inputs/SelectInput";
-import { UrlInput } from "../../common/inputs/urlInput";
+import { UrlInput } from "../../common/inputs/UrlInput";
 import { useFormValidate } from "../../../hooks/useFormValidate";
+import { FormNotice } from "../../common/formNotice/FormNotice";
+import Hidden from "../../common/hidden/Hidden";
 
 const errorMessages = {
   name: "2자 이상, 20자 이하로 입력해주세요.",
@@ -68,58 +70,62 @@ export const FormBody = ({ children, onResolve }: FormBodyProps) => {
   return (
     <FormLayout
       role="form"
-      aria-label="신청서"
       onSubmit={onFormSubmit}
-      noValidate>
-      <FormLabel label="이름 / 닉네임">
-        {(label) => (
-          <NameInput
-            ref={nameRef}
-            id={label}
-            errorMessage={errors?.name && errorMessages.name}
-            tabIndex={2}
-            aria-label="이름 / 닉네임을 입력해주세요."
-            aria-describedby={"name-valid"}
-          />
-        )}
-      </FormLabel>
-      <FormLabel label="이메일">
-        {(label) => (
-          <EmailInput
-            ref={emailRef}
-            id={label}
-            errorMessage={errors?.email && errorMessages.email}
-            tabIndex={3}
-            aria-label="이메일을 입력해주세요."
-            aria-describedby={"email-valid"}
-          />
-        )}
-      </FormLabel>
-      <FormLabel label="FE 경력 연차">
-        {(label) => (
-          <SelectInput
-            ref={experienceRef}
-            name="experience"
-            id={label}
-            tabIndex={4}
-            errorMessage={errors?.experience && errorMessages.experience}
-            aria-describedby={"experience-valid"}
-          />
-        )}
-      </FormLabel>
-      <FormLabel label="GitHub 링크 (선택)">
-        {(label) => (
-          <UrlInput
-            ref={githubRef}
-            id={label}
-            name="github"
-            tabIndex={5}
-            aria-label="URL 링크를 입력해주세요."
-            aria-describedby={"url-valid"}
-          />
-        )}
-      </FormLabel>
-      {children(isPending)}
+      noValidate
+      aria-labelledby="modal-form-title">
+      <Fieldset>
+        <Hidden>
+          <legend>{"신청서 작성 폼"}</legend>
+        </Hidden>
+        <FormLabel label="이름 / 닉네임" id="name-input" required>
+          {(id) => (
+            <NameInput
+              ref={nameRef}
+              id={id}
+              name="name"
+              errorMessage={errors?.name && errorMessages.name}
+              aria-describedby={"name-valid"}
+            />
+          )}
+        </FormLabel>
+        <FormLabel label="이메일" id="email-input" required>
+          {(id) => (
+            <EmailInput
+              ref={emailRef}
+              id={id}
+              name="email"
+              errorMessage={errors?.email && errorMessages.email}
+              aria-describedby={"email-valid"}
+            />
+          )}
+        </FormLabel>
+        <FormLabel label="FE 경력 연차" id="experience-input" required>
+          {(id) => (
+            <SelectInput
+              ref={experienceRef}
+              id={id}
+              name="experience"
+              errorMessage={errors?.experience && errorMessages.experience}
+              aria-describedby={"experience-valid"}
+            />
+          )}
+        </FormLabel>
+        <FormLabel label="GitHub 링크" id="github-input">
+          {(id) => (
+            <UrlInput
+              ref={githubRef}
+              id={id}
+              name="github"
+              aria-describedby={"url-valid"}
+            />
+          )}
+        </FormLabel>
+        {children(isPending)}
+      </Fieldset>
+      <FormNotice
+        ariaLabelId="form-notice"
+        content={"* 표시된 항목은 필수 입력입니다."}
+      />
     </FormLayout>
   );
 };
