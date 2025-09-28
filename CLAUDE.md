@@ -18,10 +18,12 @@ This is an accessibility challenge project for implementing a modal form compone
 ## Key Implementation Requirements
 
 ### Modal API Design
+
 - Must support `const result = await openFormModal()` pattern
 - Returns form data on submit, `null` on cancel/close
 
 ### Accessibility Features Required
+
 - ESC key and overlay click to close
 - Focus management: title on open → trigger button on close
 - Tab/Shift+Tab navigation within modal
@@ -30,6 +32,7 @@ This is an accessibility challenge project for implementing a modal form compone
 - `prefers-reduced-motion` support
 
 ### Form Requirements
+
 - Keyboard-only operation
 - Email validation (minimum)
 - Background scroll prevention
@@ -40,3 +43,52 @@ This is an accessibility challenge project for implementing a modal form compone
 - Biome configuration: single quotes, space indentation
 - TypeScript strict mode enabled
 - Uses modern-normalize for CSS reset
+
+## PR Content Format
+
+When creating PR descriptions, use the following format:
+
+### Template Structure:
+
+```
+## 📋 Summary
+[Brief description of the changes]
+
+## 🔄 Changes Overview
+
+### AS-IS
+- [Current state description]
+
+### TO-BE
+- [Target state description]
+
+## 🎯 Detailed Changes
+
+**1. [Feature/Component Name]**
+
+**AS-IS**: [Current state]
+**TO-BE**: [New state]
+
+Files: [file paths with links if available]
+- [Change details]
+- [Implementation notes]
+
+[Continue for each major change...]
+
+## 🏗️ Component Architecture
+[Architecture diagram or structure if relevant]
+
+## 🎨 Design Tokens Added
+[Design system changes if applicable]
+
+## ♿ Accessibility Features Implemented
+[Accessibility improvements if applicable]
+```
+
+### Key Guidelines:
+
+- Use emojis for section headers (📋 🔄 🎯 🏗️ 🎨 ♿)
+- Structure with AS-IS/TO-BE format for clarity
+- Include file paths and links when possible
+- Focus on business value and technical impact
+- Highlight accessibility and design system changes

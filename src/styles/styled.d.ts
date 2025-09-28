@@ -1,10 +1,9 @@
 import "styled-components";
-import { animation } from "./animation";
-
-type AnimationType = typeof animation;
+import { Animation, Palette } from "./theme";
 
 declare module "styled-components" {
   export interface DefaultTheme {
-    animations: AnimationType;
+    animations: Animation;
+    palette: Palette;
   }
 }
