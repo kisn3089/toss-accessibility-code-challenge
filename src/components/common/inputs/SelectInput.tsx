@@ -1,6 +1,6 @@
 import React from "react";
 import { Select } from "../formLabel/FormLabel.style";
-import { ErrorMessge } from "../errorMessage/ErrorMessage";
+import { ErrorMessage } from "../errorMessage/ErrorMessage";
 
 type SelectInputProps = {
   errorMessage?: string;
@@ -16,14 +16,14 @@ export const SelectInput = React.forwardRef<
         required
         aria-required="true"
         aria-label="FE 경력 연차 선택란"
-        aria-invalid={Boolean(errorMessage) ? "false" : "true"}
+        aria-invalid={Boolean(errorMessage) ? "true" : "false"}
         {...selectProps}>
         <option value="">{"선택하세요"}</option>
         <option value="junior">{"0-3년차"}</option>
         <option value="mid">{"4-7년차"}</option>
         <option value="senior">{"8년차 이상"}</option>
       </Select>
-      <ErrorMessge
+      <ErrorMessage
         ariaId={selectProps["aria-describedby"]}
         message={errorMessage}
       />

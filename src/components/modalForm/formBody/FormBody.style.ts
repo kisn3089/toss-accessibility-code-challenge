@@ -5,3 +5,10 @@ export const FormLayout = styled.form`
   flex-direction: column;
   gap: 2px;
 `;
+
+export const Fieldset = styled.fieldset`
+  border: none;
+  margin: 0;
+  padding: 0;
+  min-width: 0;
+`;

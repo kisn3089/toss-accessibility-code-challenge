@@ -1,15 +1,25 @@
-import { Column, Label } from "./FormLabel.style";
+import { Column, Label, Required } from "./FormLabel.style";
 
 type FormLabelProps = {
   label: string;
-  children: (label: string, ariaId?: string) => React.ReactNode;
+  id: string;
+  required?: boolean;
+  children: (id: string) => React.ReactNode;
 };
 
-export const FormLabel = ({ label, children }: FormLabelProps) => {
+export const FormLabel = ({
+  id,
+  label,
+  required,
+  children,
+}: FormLabelProps) => {
   return (
     <Column>
-      <Label htmlFor={label}>{label}</Label>
-      {children(label)}
+      <Label htmlFor={id}>
+        {label}
+        {required && <Required aria-hidden="true">{"*"}</Required>}
+      </Label>
+      {children(id)}
     </Column>
   );
 };

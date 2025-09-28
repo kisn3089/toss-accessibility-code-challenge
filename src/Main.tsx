@@ -8,12 +8,12 @@ import { ModalFormPage } from "./pages/modalFormPage/ModalFormPage";
 import { ModalProvider } from "./components/modal/provider/ModalProvider";
 
 createRoot(document.getElementById("root")!).render(
-  // <StrictMode>
-  <ThemeProvider theme={theme}>
-    <ModalProvider>
-      <ModalFormPage />
-      <Overlay />
-    </ModalProvider>
-  </ThemeProvider>
-  // </StrictMode>
+  <StrictMode>
+    <ThemeProvider theme={theme}>
+      <ModalProvider>
+        <ModalFormPage />
+        <Overlay />
+      </ModalProvider>
+    </ThemeProvider>
+  </StrictMode>
 );

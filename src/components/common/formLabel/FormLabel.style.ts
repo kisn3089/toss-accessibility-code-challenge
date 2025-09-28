@@ -12,6 +12,12 @@ export const Label = styled.label`
   font-weight: 600;
 `;
 
+export const Required = styled.span`
+  font-size: 0.75rem;
+  color: ${({ theme }) => theme.palette.blue};
+  padding-left: 2px;
+`;
+
 // 공통 스타일 base
 const baseInputStyles = css`
   width: 100%;

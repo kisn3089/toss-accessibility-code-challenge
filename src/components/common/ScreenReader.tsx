@@ -1,19 +1,20 @@
 import type { HTMLAttributes } from "react";
+import Hidden from "./hidden/Hidden";
 
-type SreenReaderProps = {
+type ScreenReaderProps = {
   readCondition?: boolean;
 } & HTMLAttributes<Element> &
   React.PropsWithChildren;
-export const SreenReader = ({
+export const ScreenReader = ({
   readCondition = true,
   children,
-  ...aria
-}: SreenReaderProps) => {
+  ...divProps
+}: ScreenReaderProps) => {
   if (!readCondition) return null;
 
   return (
-    <div {...aria} style={{ display: "none" }}>
-      {children}
-    </div>
+    <Hidden>
+      <div {...divProps}>{children}</div>
+    </Hidden>
   );
 };

@@ -30,7 +30,7 @@ export const OverlayLayout = styled.div<{ $isLastIndex: boolean }>`
   z-index: 1000;
 `;
 
-export const ModalFormLayout = styled.main`
+export const ModalFormLayout = styled.dialog`
   box-shadow: ${({ theme }) => theme.palette.gray_light} 0 0 6px 2px;
   padding: 18px;
   background-color: ${({ theme }) => theme.palette.white};
