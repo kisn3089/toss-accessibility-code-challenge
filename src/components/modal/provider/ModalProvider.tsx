@@ -30,8 +30,7 @@ export const ModalProvider = ({ children }: React.PropsWithChildren) => {
     <ReturnData,>(element: React.ReactElement): Promise<ReturnData> => {
       return new Promise<ReturnData>((resolve) => {
         const clonedWithResolver = cloneElementWithResolver(element, resolve);
-        const pushedModals = [...modalElements, clonedWithResolver];
-        setModalElements(pushedModals);
+        setModalElements((prev) => [...prev, clonedWithResolver]);
       });
     },
     [modalElements]
